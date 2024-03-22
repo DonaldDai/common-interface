@@ -7,28 +7,48 @@ import { ColorList, ModeList } from './utils';
 const btns = [['Display', ModeList], ['Color', ColorList]];
 
 let inited = false;
+let hasStopAutoRotate = false;
 
 function App() {
   const miewDom = useRef(null);
   const viewer = useRef(null);
   useEffect(() => {
-    if (inited) {
-      return;
+    if (!inited) {
+      const search = {};
+      window.location.search.replace('?', '').split('&').forEach((ss) => {
+        const [k, v] = ss.split('=');
+        search[k] = decodeURIComponent(v);
+      })
+      const initModel = search['d'] || 'aspartame.xyz';
+      const mViewer = new Miew({ container: miewDom.current, load: `http://app.jyours.com/data/${initModel}`, settings: {
+        autoRotation: -0.5,
+        bg: {color: 0xffffff, transparent: true},
+      } })
+      if (mViewer.init()) {
+        inited = true;
+        mViewer.run();
+      }
+      viewer.current = mViewer;
     }
-    const search = {};
-    window.location.search.replace('?', '').split('&').forEach((ss) => {
-      const [k, v] = ss.split('=');
-      search[k] = decodeURIComponent(v);
-    })
-    const initModel = search['d'] || 'aspartame.xyz';
-    viewer.current = new Miew({ container: miewDom.current, load: `http://app.jyours.com/data/${initModel}`, settings: {
-      bg: {color: 0xffffff, transparent: true},
-    } })
-    if (viewer.current.init()) {
-      inited = true;
-      viewer.current.run();
+    const stop = () => {
+      if (hasStopAutoRotate) {
+        return;
+      }
+      if (viewer.current) {
+        viewer.current.set('autoRotation', 0);
+        hasStopAutoRotate = true;
+      }
+    };
+    if (viewer.current) {
+      console.log('listen');
+      viewer.current.addEventListener('rotate', stop);
     }
-    return () => {};
+    return () => {
+      if (viewer.current) {
+        console.log('listen');
+        viewer.current.removeEventListener('rotate', stop);
+      }
+    };
   },[]);
 
   const handleChange = (e) => {
@@ -61,7 +81,6 @@ function App() {
   }
   return (
     <div className="app">
-      <div ref={miewDom} className='miew-container' />
       <div className='btn-wrapper'>
         {btns.map(([title, list]) => {
           return (
@@ -76,6 +95,7 @@ function App() {
           );
         })}
       </div>
+      <div ref={miewDom} className='miew-container' />
     </div>
   );
 }
