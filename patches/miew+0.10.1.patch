@@ -1,0 +1,30 @@
+diff --git a/node_modules/miew/dist/miew.module.js b/node_modules/miew/dist/miew.module.js
+index a7dbf54..78c7d6a 100644
+--- a/node_modules/miew/dist/miew.module.js
++++ b/node_modules/miew/dist/miew.module.js
+@@ -2,7 +2,7 @@
+ Copyright (c) 2015-2022 EPAM Systems, Inc. */
+ 
+ import { find, forEach, remove, omitBy, findKey, isNumber, assign, forIn, isEmpty, isEqual, isString, isPlainObject, get, set, merge, cloneDeep, filter, isArray, fill, clone, isUndefined, isArrayBuffer, isTypedArray, pick, fromPairs, zip, isBoolean, invert, findIndex, head, defaults as defaults$2, slice, sortBy, keys } from 'lodash';
+-import { Vector3, Box3, Sphere, MathUtils, Vector2, DataTexture, LuminanceFormat, UnsignedByteType, UVMapping, ClampToEdgeWrapping, LinearFilter, Object3D, Group, Matrix4, WebGLRenderer, MeshBasicMaterial, Scene, Mesh, PlaneBufferGeometry, OrthographicCamera, RawShaderMaterial, PerspectiveCamera, StereoCamera, Raycaster, BufferAttribute, InstancedBufferGeometry, LineSegments, Line, LessEqualDepth, Color, SphereBufferGeometry, InstancedBufferAttribute, BufferGeometry, Matrix3, CylinderBufferGeometry as CylinderBufferGeometry$1, Uint16BufferAttribute, RGBFormat, RepeatWrapping, NearestFilter, UniformsUtils, UniformsLib, DoubleSide, Material, Ray, ShaderMaterial, FrontSide, BackSide, Plane, Vector4, LineBasicMaterial, Layers, Quaternion, AxesHelper, CylinderGeometry, RGBAFormat, WebGL1Renderer, PCFShadowMap, Fog, DirectionalLight, AmbientLight, WebGLRenderTarget, DepthTexture, UnsignedShortType, FloatType, NoBlending, Euler } from 'three';
++import { Vector3, Box3, Sphere, MathUtils, Vector2, DataTexture, LuminanceFormat, UnsignedByteType, UVMapping, ClampToEdgeWrapping, LinearFilter, Object3D, Group, Matrix4, WebGLRenderer, MeshBasicMaterial, Scene, Mesh, PlaneBufferGeometry, OrthographicCamera, RawShaderMaterial, PerspectiveCamera, StereoCamera, Raycaster, BufferAttribute, InstancedBufferGeometry, LineSegments, Line, LessEqualDepth, Color, SphereBufferGeometry, InstancedBufferAttribute, BufferGeometry, Matrix3, CylinderBufferGeometry as CylinderBufferGeometry$1, Uint16BufferAttribute, RGBFormat, RepeatWrapping, NearestFilter, UniformsUtils, UniformsLib, DoubleSide, Material, Ray, ShaderMaterial, FrontSide, BackSide, Plane, Vector4, LineBasicMaterial, Layers, Quaternion, AxesHelper, CylinderGeometry, RGBAFormat, WebGL1Renderer, PCFShadowMap, Fog, DirectionalLight, AmbientLight, WebGLRenderTarget, DepthTexture, UnsignedShortType, FloatType, NoBlending, Euler, ArrowHelper } from 'three';
+ 
+ function _typeof(obj) {
+   "@babel/helpers - typeof";
+@@ -25487,7 +25487,15 @@ var Axes = function () {
+     this._target = target;
+     this._targetCamera = targetCamera;
+     this._camera = new PerspectiveCamera(targetCamera.fov, targetCamera.aspect, 1, 100);
+-    this._object = new AxesHelper(1);
++    var arrowPos = new Vector3( 0,0,0 );
++    console.log('Axes...5');
++    const group = new Group();
++    const arrowLen = 1;
++    group.add( new ArrowHelper( new Vector3( 1,0,0 ), arrowPos, arrowLen, 0x7F2020, arrowLen*0.3, arrowLen*0.3 ) );
++    group.add( new ArrowHelper( new Vector3( 0,1,0 ), arrowPos, arrowLen, 0x207F20, arrowLen*0.3, arrowLen*0.3 ) );
++    group.add( new ArrowHelper( new Vector3( 0,0,1 ), arrowPos, arrowLen, 0x20207F, arrowLen*0.3, arrowLen*0.3 ) );
++    this._object = group;
++    // this._object = new AxesHelper(1);
+     this._scene = new Scene();
+     this._scene.add(this._object);
+     this._full = new Vector2();
