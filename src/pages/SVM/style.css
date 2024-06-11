@@ -1,0 +1,28 @@
+.dragging {
+  border: 5px solid #1890ff !important; /* 更明显的蓝色虚线边框 */
+  background-color: #e6f7ff !important; /* 拖拽时的浅蓝色背景 */
+}
+
+.svm-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 60px;
+}
+
+.svm-act-result {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.svm-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.svm-block-model {
+  width: 250px;
+  height: 250px; 
+}

@@ -6,37 +6,39 @@ import { ColorList, ModeList } from './utils';
 
 const btns = [['Display', ModeList], ['Color', ColorList]];
 
-let inited = false;
-let hasStopAutoRotate = false;
-
-function App() {
+function App(props) {
+  const { link = '', hide = false, spin = true } = props;
   const miewDom = useRef(null);
   const viewer = useRef(null);
+  const inited = useRef(false);
+  const hasStopAutoRotate = useRef(false);
   useEffect(() => {
-    if (!inited) {
+    if (!inited.current) {
       const search = {};
       window.location.search.replace('?', '').split('&').forEach((ss) => {
         const [k, v] = ss.split('=');
         search[k] = decodeURIComponent(v);
       })
       const initModel = search['d'] || 'aspartame.xyz';
-      const mViewer = new Miew({ container: miewDom.current, load: `http://app.jyours.com/data/${initModel}`, settings: {
-        autoRotation: -0.5,
+      const dataLink = link || `http://app.jyours.com/data/${initModel}`;
+      const mViewer = new Miew({ container: miewDom.current, load: dataLink, settings: {
+        autoRotation: spin ? -0.5 : 0,
         bg: {color: 0xffffff, transparent: true},
       } })
       if (mViewer.init()) {
-        inited = true;
+        inited.current = true;
         mViewer.run();
       }
       viewer.current = mViewer;
     }
     const stop = () => {
-      if (hasStopAutoRotate) {
+      console.log('=======listen rotate')
+      if (hasStopAutoRotate.current) {
         return;
       }
       if (viewer.current) {
         viewer.current.set('autoRotation', 0);
-        hasStopAutoRotate = true;
+        hasStopAutoRotate.current = true;
       }
     };
     if (viewer.current) {
@@ -81,20 +83,22 @@ function App() {
   }
   return (
     <div className="app">
-      <div className='btn-wrapper'>
-        {btns.map(([title, list]) => {
-          return (
-            <div key={title} style={{ marginBottom: 12 }} >
-              <h3 style={{ marginBottom: 4 }}>{title}</h3>
-              <Radio.Group  defaultValue={list[0].id} buttonStyle="solid" data-mo-type={title} >
-                {list.map((d) => {
-                  return <Radio.Button key={d.id} value={d.id} data-mo-value={d.id} onClick={handleChange} >{d.name}</Radio.Button>;
-                })}
-              </Radio.Group>
-            </div>
-          );
-        })}
-      </div>
+      {!hide && (
+        <div className='btn-wrapper'>
+          {btns.map(([title, list]) => {
+            return (
+              <div key={title} style={{ marginBottom: 12 }} >
+                <h3 style={{ marginBottom: 4 }}>{title}</h3>
+                <Radio.Group  defaultValue={list[0].id} buttonStyle="solid" data-mo-type={title} >
+                  {list.map((d) => {
+                    return <Radio.Button key={d.id} value={d.id} data-mo-value={d.id} onClick={handleChange} >{d.name}</Radio.Button>;
+                  })}
+                </Radio.Group>
+              </div>
+            );
+          })}
+        </div>
+      )}
       <div ref={miewDom} className='miew-container' />
     </div>
   );

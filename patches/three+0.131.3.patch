@@ -1,8 +1,8 @@
 diff --git a/node_modules/three/build/three.module.js b/node_modules/three/build/three.module.js
-index ce0c45e..8929e27 100644
+index ce0c45e..4fd36ff 100644
 --- a/node_modules/three/build/three.module.js
 +++ b/node_modules/three/build/three.module.js
-@@ -47540,14 +47540,15 @@ class ArrowHelper extends Object3D {
+@@ -47540,14 +47540,14 @@ class ArrowHelper extends Object3D {
  			_lineGeometry = new BufferGeometry();
  			_lineGeometry.setAttribute( 'position', new Float32BufferAttribute( [ 0, 0, 0, 0, 1, 0 ], 3 ) );
  
