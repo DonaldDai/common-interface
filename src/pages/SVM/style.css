@@ -4,12 +4,13 @@
 }
 
 .svm-container {
-  width: 100%;
+  width: fit-content;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px 60px;
+  margin: 0 auto;
   overflow: hidden;
 }
 
@@ -22,7 +23,6 @@
   flex-wrap: wrap;
   overflow: scroll;
   padding: 8px;
-  box-shadow: inset 0 0 0 4px #c1c1c1;
   border-radius: 16px;
 }
 
@@ -50,6 +50,14 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   padding: 8px 0;
+}
+
+.svm-btns > button {
+  margin-right: 16px;
+}
+
+.svm-btns > button:last-child {
+  margin-right: 0;
 }
